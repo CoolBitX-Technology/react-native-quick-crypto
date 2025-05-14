@@ -39,7 +39,7 @@ enum class Prop {
   Float64Array,       // "Float64Array"
 };
 
-class PropNameIDCache {
+class MGLPropNameIDCache {
  public:
   const jsi::PropNameID &get(jsi::Runtime &runtime, Prop prop) {
     auto key = reinterpret_cast<uintptr_t>(&runtime);
@@ -65,16 +65,16 @@ class PropNameIDCache {
   jsi::PropNameID createProp(jsi::Runtime &runtime, Prop prop);
 };
 
-PropNameIDCache propNameIDCache;
+MGLPropNameIDCache propNameIDCache;
 
-InvalidateCacheOnDestroy::InvalidateCacheOnDestroy(jsi::Runtime &runtime) {
+MGLInvalidateCacheOnDestroy::MGLInvalidateCacheOnDestroy(jsi::Runtime &runtime) {
   key = reinterpret_cast<uintptr_t>(&runtime);
 }
-InvalidateCacheOnDestroy::~InvalidateCacheOnDestroy() {
+MGLInvalidateCacheOnDestroy::~MGLInvalidateCacheOnDestroy() {
   propNameIDCache.invalidate(key);
 }
 
-MGLTypedArrayKind getTypedArrayKindForName(const std::string &name);
+MGLTypedArrayKind MGLgetTypedArrayKindForName(const std::string &name);
 
 MGLTypedArrayBase::MGLTypedArrayBase(jsi::Runtime &runtime, size_t size,
                                      MGLTypedArrayKind kind)
@@ -101,7 +101,7 @@ MGLTypedArrayKind MGLTypedArrayBase::getKind(jsi::Runtime &runtime) const {
           .getProperty(runtime, propNameIDCache.get(runtime, Prop::Name))
           .asString(runtime)
           .utf8(runtime);
-  return getTypedArrayKindForName(constructorName);
+  return MGLgetTypedArrayKindForName(constructorName);
 }
 
 size_t MGLTypedArrayBase::size(jsi::Runtime &runtime) const {
@@ -147,7 +147,7 @@ jsi::ArrayBuffer MGLTypedArrayBase::getBuffer(jsi::Runtime &runtime) const {
   }
 }
 
-bool isTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj) {
+bool MGLisTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj) {
   auto jsVal =
       runtime.global()
           .getProperty(runtime, propNameIDCache.get(runtime, Prop::ArrayBuffer))
@@ -164,7 +164,7 @@ bool isTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj) {
   }
 }
 
-MGLTypedArrayBase getTypedArray(jsi::Runtime &runtime,
+MGLTypedArrayBase MGLgetTypedArray(jsi::Runtime &runtime,
                                 const jsi::Object &jsObj) {
   auto jsVal =
       runtime.global()
@@ -182,7 +182,7 @@ MGLTypedArrayBase getTypedArray(jsi::Runtime &runtime,
   }
 }
 
-std::vector<uint8_t> arrayBufferToVector(jsi::Runtime &runtime,
+std::vector<uint8_t> MGLarrayBufferToVector(jsi::Runtime &runtime,
                                          jsi::Object &jsObj) {
   if (!jsObj.isArrayBuffer(runtime)) {
     throw std::runtime_error("Object is not an ArrayBuffer");
@@ -197,7 +197,7 @@ std::vector<uint8_t> arrayBufferToVector(jsi::Runtime &runtime,
   return std::vector<uint8_t>(dataBlock, dataBlock + blockSize);
 }
 
-void arrayBufferUpdate(jsi::Runtime &runtime, jsi::ArrayBuffer &buffer,
+void MGLarrayBufferUpdate(jsi::Runtime &runtime, jsi::ArrayBuffer &buffer,
                        std::vector<uint8_t> data, size_t offset) {
   uint8_t *dataBlock = buffer.data(runtime);
   size_t blockSize = buffer.size(runtime);
@@ -257,7 +257,7 @@ uint8_t* MGLTypedArray<T>::data(jsi::Runtime &runtime) {
   return getBuffer(runtime).data(runtime) + byteOffset(runtime);
 }
 
-const jsi::PropNameID &PropNameIDCache::getConstructorNameProp(
+const jsi::PropNameID &MGLPropNameIDCache::getConstructorNameProp(
     jsi::Runtime &runtime, MGLTypedArrayKind kind) {
   switch (kind) {
     case MGLTypedArrayKind::Int8Array:
@@ -281,7 +281,7 @@ const jsi::PropNameID &PropNameIDCache::getConstructorNameProp(
   }
 }
 
-jsi::PropNameID PropNameIDCache::createProp(jsi::Runtime &runtime, Prop prop) {
+jsi::PropNameID MGLPropNameIDCache::createProp(jsi::Runtime &runtime, Prop prop) {
   auto create = [&](const std::string &propName) {
     return jsi::PropNameID::forUtf8(runtime, propName);
   };
@@ -337,7 +337,7 @@ std::unordered_map<std::string, MGLTypedArrayKind> nameToKindMap = {
     {"Float64Array", MGLTypedArrayKind::Float64Array},
 };
 
-MGLTypedArrayKind getTypedArrayKindForName(const std::string &name) {
+MGLTypedArrayKind MGLgetTypedArrayKindForName(const std::string &name) {
   return nameToKindMap.at(name);
 }
 

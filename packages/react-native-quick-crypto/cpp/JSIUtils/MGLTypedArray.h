@@ -69,13 +69,13 @@ struct typedArrayTypeMap<MGLTypedArrayKind::Float64Array> {
   typedef double type;
 };
 
-// Instance of this class will invalidate PropNameIDCache when destructor is called.
+// Instance of this class will invalidate MGLPropNameIDCache when destructor is called.
 // Attach this object to global in specific jsi::Runtime to make sure lifecycle of
 // the cache object is connected to the lifecycle of the js runtime
-class InvalidateCacheOnDestroy : public jsi::HostObject {
+class MGLInvalidateCacheOnDestroy : public jsi::HostObject {
  public:
-  explicit InvalidateCacheOnDestroy(jsi::Runtime &runtime);
-  virtual ~InvalidateCacheOnDestroy();
+  explicit MGLInvalidateCacheOnDestroy(jsi::Runtime &runtime);
+  virtual ~MGLInvalidateCacheOnDestroy();
   virtual jsi::Value get(jsi::Runtime &, const jsi::PropNameID &name) {
     return jsi::Value::null();
   }
@@ -123,13 +123,13 @@ class MGLTypedArrayBase : public jsi::Object {
   friend class MGLTypedArray;
 };
 
-bool isTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj);
-MGLTypedArrayBase getTypedArray(jsi::Runtime &runtime,
+bool MGLisTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj);
+MGLTypedArrayBase MGLgetTypedArray(jsi::Runtime &runtime,
                                 const jsi::Object &jsObj);
 
-std::vector<uint8_t> arrayBufferToVector(jsi::Runtime &runtime,
+std::vector<uint8_t> MGLarrayBufferToVector(jsi::Runtime &runtime,
                                          jsi::Object &jsObj);
-void arrayBufferUpdate(jsi::Runtime &runtime, jsi::ArrayBuffer &buffer,
+void MGLarrayBufferUpdate(jsi::Runtime &runtime, jsi::ArrayBuffer &buffer,
                        std::vector<uint8_t> data, size_t offset);
 
 template <MGLTypedArrayKind T>
