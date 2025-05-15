@@ -10,3 +10,10 @@ bun --version
 ```bash
 bun install
 ```
+
+# Publish
+
+```bash
+npm login
+bun release
+```
