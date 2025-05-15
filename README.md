@@ -1,3 +1,5 @@
+npm module: https://www.npmjs.com/package/@coolwallet-app/react-native-quick-crypto
+
 # Install bun
 
 ```bash
