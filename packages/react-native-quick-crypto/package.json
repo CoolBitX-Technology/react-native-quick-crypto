@@ -63,7 +63,8 @@
   },
   "homepage": "https://github.com/margelo/react-native-quick-crypto#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "dependencies": {
     "@craftzdog/react-native-buffer": "^6.0.5",
