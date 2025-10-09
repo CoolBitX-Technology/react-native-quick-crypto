@@ -1,9 +1,9 @@
 {
-  "version": "0.7.14",
+  "version": "0.7.17",
   "scripts": {
     "clean": "bun --filter='*' clean",
     "deepclean": "bun --filter='*' deepclean && del-cli node_modules",
-    "specs": "bun --filter='react-native-quick-crypto' specs",
+    "specs": "bun --filter='@coolwallet-app/react-native-quick-crypto' specs",
     "bundle-install": "bun --filter='react-native-quick-crypto-example' bundle-install",
     "pods": "bun --filter='react-native-quick-crypto-example' pods",
     "start": "cd packages/example && bun start",
@@ -13,7 +13,7 @@
     "lint:fix": "bun --filter='*' lint:fix",
     "format": "bun --filter='*' format",
     "format:fix": "bun --filter='*' format:fix",
-    "prepare": "bun --filter=\"react-native-quick-crypto\" prepare",
+    "prepare": "bun --filter=\"@coolwallet-app/react-native-quick-crypto\" prepare",
     "release": "./scripts/release.sh"
   },
   "devDependencies": {
