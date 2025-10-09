@@ -32,12 +32,6 @@
       "tagName": "v${version}",
       "requireCleanWorkingDir": false
     },
-    "github": {
-      "release": true
-    },
-    "hooks": {
-      "before:release": "bun bundle-install && bun pods && git add packages/example/ios/Podfile.lock"
-    },
     "plugins": {
       "@release-it/conventional-changelog": {
         "preset": {

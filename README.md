@@ -17,5 +17,5 @@ bun install
 
 ```bash
 npm login
-bun release
+bun release $RELEASE_VERSION # e.g.: 0.7.17-cbx.0
 ```
