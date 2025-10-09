@@ -41,9 +41,9 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
   auto object = jsi::Object::createFromHostObject(runtime, hostObject);
   runtime.global().setProperty(runtime, "__QuickCryptoProxy", std::move(object));
 
-  // Adds the PropNameIDCache object to the Runtime. If the Runtime gets
+  // Adds the MGLPropNameIDCache object to the Runtime. If the Runtime gets
   // destroyed, the Object gets destroyed and the cache gets invalidated.
-  auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(runtime);
+  auto propNameIdCache = std::make_shared<MGLInvalidateCacheOnDestroy>(runtime);
   runtime.global().setProperty(
     runtime,
     "rnqcArrayBufferPropNameIdCache",

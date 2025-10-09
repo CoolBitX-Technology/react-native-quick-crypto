@@ -39,7 +39,7 @@ enum class Prop {
   Float64Array,       // "Float64Array"
 };
 
-class PropNameIDCache {
+class MGLPropNameIDCache {
  public:
   const jsi::PropNameID &get(jsi::Runtime &runtime, Prop prop) {
     auto key = reinterpret_cast<uintptr_t>(&runtime);
@@ -65,16 +65,16 @@ class PropNameIDCache {
   jsi::PropNameID createProp(jsi::Runtime &runtime, Prop prop);
 };
 
-PropNameIDCache propNameIDCache;
+MGLPropNameIDCache MGLpropNameIDCache;
 
-InvalidateCacheOnDestroy::InvalidateCacheOnDestroy(jsi::Runtime &runtime) {
+MGLInvalidateCacheOnDestroy::MGLInvalidateCacheOnDestroy(jsi::Runtime &runtime) {
   key = reinterpret_cast<uintptr_t>(&runtime);
 }
-InvalidateCacheOnDestroy::~InvalidateCacheOnDestroy() {
-  propNameIDCache.invalidate(key);
+MGLInvalidateCacheOnDestroy::~MGLInvalidateCacheOnDestroy() {
+  MGLpropNameIDCache.invalidate(key);
 }
 
-MGLTypedArrayKind getTypedArrayKindForName(const std::string &name);
+MGLTypedArrayKind MGLgetTypedArrayKindForName(const std::string &name);
 
 MGLTypedArrayBase::MGLTypedArrayBase(jsi::Runtime &runtime, size_t size,
                                      MGLTypedArrayKind kind)
@@ -83,7 +83,7 @@ MGLTypedArrayBase::MGLTypedArrayBase(jsi::Runtime &runtime, size_t size,
           runtime.global()
               .getProperty(
                 runtime,
-                propNameIDCache.getConstructorNameProp(runtime, kind))
+                MGLpropNameIDCache.getConstructorNameProp(runtime, kind))
               .asObject(runtime)
               .asFunction(runtime)
               .callAsConstructor(runtime, {static_cast<double>(size)})
@@ -96,37 +96,37 @@ MGLTypedArrayBase::MGLTypedArrayBase(jsi::Runtime &runtime,
 MGLTypedArrayKind MGLTypedArrayBase::getKind(jsi::Runtime &runtime) const {
   auto constructorName =
       this->getProperty(runtime,
-                        propNameIDCache.get(runtime, Prop::Constructor))
+                        MGLpropNameIDCache.get(runtime, Prop::Constructor))
           .asObject(runtime)
-          .getProperty(runtime, propNameIDCache.get(runtime, Prop::Name))
+          .getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::Name))
           .asString(runtime)
           .utf8(runtime);
-  return getTypedArrayKindForName(constructorName);
+  return MGLgetTypedArrayKindForName(constructorName);
 }
 
 size_t MGLTypedArrayBase::size(jsi::Runtime &runtime) const {
-  return getProperty(runtime, propNameIDCache.get(runtime, Prop::Length))
+  return getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::Length))
       .asNumber();
 }
 
 size_t MGLTypedArrayBase::length(jsi::Runtime &runtime) const {
-  return getProperty(runtime, propNameIDCache.get(runtime, Prop::Length))
+  return getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::Length))
       .asNumber();
 }
 
 size_t MGLTypedArrayBase::byteLength(jsi::Runtime &runtime) const {
-  return getProperty(runtime, propNameIDCache.get(runtime, Prop::ByteLength))
+  return getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::ByteLength))
       .asNumber();
 }
 
 size_t MGLTypedArrayBase::byteOffset(jsi::Runtime &runtime) const {
-  return getProperty(runtime, propNameIDCache.get(runtime, Prop::ByteOffset))
+  return getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::ByteOffset))
       .asNumber();
 }
 
 bool MGLTypedArrayBase::hasBuffer(jsi::Runtime &runtime) const {
   auto buffer =
-      getProperty(runtime, propNameIDCache.get(runtime, Prop::Buffer));
+      getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::Buffer));
   return buffer.isObject() && buffer.asObject(runtime).isArrayBuffer(runtime);
 }
 
@@ -139,7 +139,7 @@ std::vector<uint8_t> MGLTypedArrayBase::toVector(jsi::Runtime &runtime) {
 
 jsi::ArrayBuffer MGLTypedArrayBase::getBuffer(jsi::Runtime &runtime) const {
   auto buffer =
-      getProperty(runtime, propNameIDCache.get(runtime, Prop::Buffer));
+      getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::Buffer));
   if (buffer.isObject() && buffer.asObject(runtime).isArrayBuffer(runtime)) {
     return buffer.asObject(runtime).getArrayBuffer(runtime);
   } else {
@@ -147,12 +147,12 @@ jsi::ArrayBuffer MGLTypedArrayBase::getBuffer(jsi::Runtime &runtime) const {
   }
 }
 
-bool isTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj) {
+bool MGLisTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj) {
   auto jsVal =
       runtime.global()
-          .getProperty(runtime, propNameIDCache.get(runtime, Prop::ArrayBuffer))
+          .getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::ArrayBuffer))
           .asObject(runtime)
-          .getProperty(runtime, propNameIDCache.get(runtime, Prop::IsView))
+          .getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::IsView))
           .asObject(runtime)
           .asFunction(runtime)
           .callWithThis(runtime, runtime.global(),
@@ -164,13 +164,13 @@ bool isTypedArray(jsi::Runtime &runtime, const jsi::Object &jsObj) {
   }
 }
 
-MGLTypedArrayBase getTypedArray(jsi::Runtime &runtime,
+MGLTypedArrayBase MGLgetTypedArray(jsi::Runtime &runtime,
                                 const jsi::Object &jsObj) {
   auto jsVal =
       runtime.global()
-          .getProperty(runtime, propNameIDCache.get(runtime, Prop::ArrayBuffer))
+          .getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::ArrayBuffer))
           .asObject(runtime)
-          .getProperty(runtime, propNameIDCache.get(runtime, Prop::IsView))
+          .getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::IsView))
           .asObject(runtime)
           .asFunction(runtime)
           .callWithThis(runtime, runtime.global(),
@@ -182,7 +182,7 @@ MGLTypedArrayBase getTypedArray(jsi::Runtime &runtime,
   }
 }
 
-std::vector<uint8_t> arrayBufferToVector(jsi::Runtime &runtime,
+std::vector<uint8_t> MGLarrayBufferToVector(jsi::Runtime &runtime,
                                          jsi::Object &jsObj) {
   if (!jsObj.isArrayBuffer(runtime)) {
     throw std::runtime_error("Object is not an ArrayBuffer");
@@ -192,12 +192,12 @@ std::vector<uint8_t> arrayBufferToVector(jsi::Runtime &runtime,
   uint8_t *dataBlock = jsArrayBuffer.data(runtime);
   size_t blockSize =
       jsArrayBuffer
-          .getProperty(runtime, propNameIDCache.get(runtime, Prop::ByteLength))
+          .getProperty(runtime, MGLpropNameIDCache.get(runtime, Prop::ByteLength))
           .asNumber();
   return std::vector<uint8_t>(dataBlock, dataBlock + blockSize);
 }
 
-void arrayBufferUpdate(jsi::Runtime &runtime, jsi::ArrayBuffer &buffer,
+void MGLarrayBufferUpdate(jsi::Runtime &runtime, jsi::ArrayBuffer &buffer,
                        std::vector<uint8_t> data, size_t offset) {
   uint8_t *dataBlock = buffer.data(runtime);
   size_t blockSize = buffer.size(runtime);
@@ -257,7 +257,7 @@ uint8_t* MGLTypedArray<T>::data(jsi::Runtime &runtime) {
   return getBuffer(runtime).data(runtime) + byteOffset(runtime);
 }
 
-const jsi::PropNameID &PropNameIDCache::getConstructorNameProp(
+const jsi::PropNameID &MGLPropNameIDCache::getConstructorNameProp(
     jsi::Runtime &runtime, MGLTypedArrayKind kind) {
   switch (kind) {
     case MGLTypedArrayKind::Int8Array:
@@ -281,7 +281,7 @@ const jsi::PropNameID &PropNameIDCache::getConstructorNameProp(
   }
 }
 
-jsi::PropNameID PropNameIDCache::createProp(jsi::Runtime &runtime, Prop prop) {
+jsi::PropNameID MGLPropNameIDCache::createProp(jsi::Runtime &runtime, Prop prop) {
   auto create = [&](const std::string &propName) {
     return jsi::PropNameID::forUtf8(runtime, propName);
   };
@@ -325,7 +325,7 @@ jsi::PropNameID PropNameIDCache::createProp(jsi::Runtime &runtime, Prop prop) {
   }
 }
 
-std::unordered_map<std::string, MGLTypedArrayKind> nameToKindMap = {
+std::unordered_map<std::string, MGLTypedArrayKind> MGLnameToKindMap = {
     {"Int8Array", MGLTypedArrayKind::Int8Array},
     {"Int16Array", MGLTypedArrayKind::Int16Array},
     {"Int32Array", MGLTypedArrayKind::Int32Array},
@@ -337,8 +337,8 @@ std::unordered_map<std::string, MGLTypedArrayKind> nameToKindMap = {
     {"Float64Array", MGLTypedArrayKind::Float64Array},
 };
 
-MGLTypedArrayKind getTypedArrayKindForName(const std::string &name) {
-  return nameToKindMap.at(name);
+MGLTypedArrayKind MGLgetTypedArrayKindForName(const std::string &name) {
+  return MGLnameToKindMap.at(name);
 }
 
 template class MGLTypedArray<MGLTypedArrayKind::Int8Array>;
