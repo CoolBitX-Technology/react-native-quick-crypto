@@ -1,5 +1,5 @@
 {
-  "version": "0.7.17",
+  "version": "0.7.17-cbx.4",
   "scripts": {
     "clean": "bun --filter='*' clean",
     "deepclean": "bun --filter='*' deepclean && del-cli node_modules",
@@ -31,12 +31,6 @@
       "commitMessage": "chore: release ${version}",
       "tagName": "v${version}",
       "requireCleanWorkingDir": false
-    },
-    "github": {
-      "release": true
-    },
-    "hooks": {
-      "before:release": "bun bundle-install && bun pods && git add packages/example/ios/Podfile.lock"
     },
     "plugins": {
       "@release-it/conventional-changelog": {
