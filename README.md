@@ -48,5 +48,5 @@ Successfully released QuickCrypto!
 - Create pull request into cbx branch
 - After the PR merged, publish to npm on cbx branch
 - Create git tag and github release
-  - Example git tag: v0.7.17-cbx.6
+  - Example git tag: `v0.7.17-cbx.6`
   - Using auto-generate notes from GitHub GUI
