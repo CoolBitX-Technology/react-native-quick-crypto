@@ -14,4 +14,4 @@ bun release $@
 # cd ../..
 # bun run release-it $@
 
-echo "\nSuccessfully released QuickCrypto!"
+echo "Successfully released QuickCrypto!"
