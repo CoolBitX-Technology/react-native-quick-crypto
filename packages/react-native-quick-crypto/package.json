@@ -124,20 +124,7 @@
       "release": false
     },
     "hooks": {
-      "after:bump": "cd ../.. && bun i && cd packages/react-native-quick-crypto && bun tsc && bun lint && bun format && bun prepare"
-    },
-    "plugins": {
-      "@release-it/bumper": {
-        "out": [
-          {
-            "file": "../../example/package.json",
-            "path": [
-              "version",
-              "dependencies.react-native-quick-crypto"
-            ]
-          }
-        ]
-      }
+      "after:bump": "bun tsc && bun lint && bun format && bun prepare"
     }
   },
   "react-native-builder-bob": {
