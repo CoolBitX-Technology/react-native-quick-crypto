@@ -35,29 +35,31 @@ bun install
 
 ```bash
 npm login
-bun release $RELEASE_VERSION # e.g.: 0.7.17-cbx.0
+bun release 
 ```
 
 Example log for publishing:
 
 ```bash
-❯ bun release 0.7.17-cbx.6
-$ ./scripts/release.sh 0.7.17-cbx.6
+❯ bun release             
+$ ./scripts/release.sh
 Starting the release process...
-Provided options: 0.7.17-cbx.6
+Provided options: 
 Publishing 'react-native-quick-crypto' to NPM
-$ release-it 0.7.17-cbx.6
+$ release-it
 
-🚀 Let's release @coolwallet-app/react-native-quick-crypto (0.7.17-cbx.5...0.7.17-cbx.6)
+🚀 Let's release @coolwallet-app/react-native-quick-crypto (currently at 1.0.18)
 
 
 Empty changelog
 
+✔ Select increment (next version): Other, please specify...
+✔ Please enter a valid version: 1.0.18-cbx.0
 ✔ bun tsc && bun lint && bun format && bun prepare
-? Publish @coolwallet-app/react-native-quick-crypto@cbx to npm? Yes
-? Please enter OTP for npm: 513493
+✔ Publish @coolwallet-app/react-native-quick-crypto@cbx to npm? Yes
+✔ Please enter OTP for npm: 056218
 🔗 https://registry.npmjs.org/package/@coolwallet-app/react-native-quick-crypto
-🏁 Done (in 225s.)
+🏁 Done (in 60s.)
 Successfully released QuickCrypto!
 ```
 
