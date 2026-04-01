@@ -29,6 +29,7 @@ brew link --overwrite bun@1.2.0 --dry-run
 
 ```bash
 bun install
+bun prepare
 ```
 
 # Publish
