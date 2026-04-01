@@ -11,4 +11,4 @@ find packages/react-native-quick-crypto/cpp -name "*.cpp" -o -name "*.hpp" | xar
 bun tsc
 
 # Run prepare script
-bun --filter="react-native-quick-crypto" prepare
+bun --filter="@coolwallet-app/react-native-quick-crypto" prepare
