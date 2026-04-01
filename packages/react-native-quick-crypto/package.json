@@ -1,5 +1,5 @@
 {
-  "name": "react-native-quick-crypto",
+  "name": "@coolwallet-app/react-native-quick-crypto",
   "version": "1.0.18",
   "description": "A fast implementation of Node's `crypto` module written in C/C++ JSI",
   "main": "lib/commonjs/index",
@@ -58,7 +58,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/margelo/react-native-quick-crypto.git"
+    "url": "git+https://github.com/CoolBitX-Technology/react-native-quick-crypto.git"
   },
   "authors": [
     "Szymon Kapała <szymon20000@gmail.com>",
@@ -67,9 +67,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/margelo/react-native-quick-crypto/issues"
+    "url": "https://github.com/CoolBitX-Technology/react-native-quick-crypto/issues"
   },
-  "homepage": "https://github.com/margelo/react-native-quick-crypto#readme",
+  "homepage": "https://github.com/CoolBitX-Technology/react-native-quick-crypto#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
