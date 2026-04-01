@@ -3,8 +3,26 @@ npm module: https://www.npmjs.com/package/@coolwallet-app/react-native-quick-cry
 # Install bun
 
 ```bash
-brew install oven-sh/bun/bun@1.1.26
+brew install oven-sh/bun/bun@1.2.0
 bun --version
+```
+
+## Troubleshooting
+
+### `brew install oven-sh/bun/bun@1.2.0` fails at `brew link`
+
+If Homebrew reports that `bun@1.2.0` is installed but cannot be symlinked because files belong to `bun@1.1.26`, run:
+
+```bash
+brew unlink bun@1.1.26
+brew link --overwrite bun@1.2.0
+bun --version
+```
+
+To preview what would be replaced before linking:
+
+```bash
+brew link --overwrite bun@1.2.0 --dry-run
 ```
 
 # Bundle libs
