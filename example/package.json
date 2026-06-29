@@ -50,7 +50,7 @@
     "util": "0.12.5"
   },
   "devDependencies": {
-    "@babel/core": "7.28.4",
+    "@babel/core": "7.29.6",
     "@babel/plugin-transform-class-static-block": "7.26.0",
     "@babel/preset-env": "7.26.0",
     "@babel/preset-typescript": "7.28.5",
